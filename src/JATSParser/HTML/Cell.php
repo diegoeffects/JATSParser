@@ -18,16 +18,25 @@ class Cell extends \DOMElement {
 			$this->setAttribute("colspan", $cell->getColspan());
 		}
 
-
 		if ($cell->getRowspan()) {
 			$this->setAttribute("rowspan", $cell->getRowspan());
 		}
 
+		// Added by UNLa
+		if ($cell->getStyle()) {
+			$this->setAttribute("style", $cell->getStyle());
+		}
+
+		// Added by UNLa
+		if ($cell->getAlign()) {
+			$this->setAttribute("align", $cell->getAlign());
+		}
+
 		// set some style
 
-		if ($cell->getColspan() > 1) {
+		/*if ($cell->getColspan() > 1) {
 			$this->setAttribute("align", "center");
-		}
+		}*/
 
 		foreach ($cell->getContent() as $cellContents) {
 			switch (get_class($cellContents)) {

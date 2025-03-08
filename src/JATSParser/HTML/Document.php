@@ -153,6 +153,9 @@ class Document extends \DOMDocument {
 					$table = new Table();
 					$parentEl->appendChild($table);
 					$table->setContent($articleSection);
+					$tableFoot = new TableFoot(); // Added by UNLa
+					$parentEl->appendChild($tableFoot); // Added by UNLa
+					$tableFoot->setContent($articleSection); // Added by UNLa
 					break;
 				case "JATSParser\Body\Figure":
 					$figure = new Figure();
@@ -197,6 +200,38 @@ class Document extends \DOMDocument {
 				case "JATSParser\Body\Text":
 					// For elements that extend Section, like disp-quote
 					Text::extractText($articleSection, $parentEl);
+					break;
+				case "JATSParser\Body\AuthorNote": // Added by UNLa
+					$titleNode = $this->createElement("h2");
+					$titleNode->setAttribute("class", "article-section-title");
+					$this->appendChild($titleNode);
+					if (count($articleSection->getAuthorNote()) > 0) {
+						foreach ($articleSection->getAuthorNote() as $authorNode) {
+							$par = new Par("p");
+							$this->appendChild($par);
+							$par->setContent($authorNode);
+						}
+					}
+					if ($articleSection->getLabel()) {
+						$textNode = $this->createTextNode($articleSection->getLabel());
+						$titleNode->appendChild($textNode);
+					}
+					break;
+				case "JATSParser\Body\Ack": //Added by UNLa
+					$titleNode = $this->createElement("h2");
+					$titleNode->setAttribute("class", "article-section-title");
+					$this->appendChild($titleNode);
+					if (count($articleSection->getAck()) > 0) {
+						foreach ($articleSection->getAck() as $ackNode) {
+							$par = new Par("p");
+							$this->appendChild($par);
+							$par->setContent($ackNode);
+						}
+					}
+					if ($articleSection->getTitle()) {
+						$textNode = $this->createTextNode($articleSection->getTitle());
+						$titleNode->appendChild($textNode);
+					}
 					break;
 			}
 		}

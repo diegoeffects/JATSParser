@@ -23,6 +23,10 @@ class Document {
 	/* var $references array of article's References */
 	private $references = array();
 
+	// Added by UNLa
+	/* var $articleFrontContent array */
+	private $articleFrontContent = array();
+
 
 	function __construct(?string $documentPath) {
 		$document = new \DOMDocument;
@@ -157,6 +161,45 @@ class Document {
 				}
 			}
 		}
+
+		// Added added by UNLa
+		foreach (self::$xpath->evaluate("/article/back") as $back) { 
+			foreach (self::$xpath->evaluate(".//ack|.//fn-group/fn|.//app-group/app", $back) as $backContent) {
+				switch ($backContent->nodeName) {
+					case "ack":
+						$acknowledgments  = new Ack($backContent);
+						break;
+					case "fn":
+						$authorNotes = new AuthorNote($backContent);
+						break;
+					case "app":
+						$app = new AuthorNote($backContent);
+						break;
+				}
+			}
+			if (isset($acknowledgments)) {
+				$articleContent[] = $acknowledgments;
+			}
+			if (isset($authorNotes)) {
+				$articleContent[] = $authorNotes;
+			}
+			if (isset($app)) {
+				$articleContent[] = $app;
+			}
+		}
+
+		// Added added by UNLa
+		foreach (self::$xpath->evaluate("/article/front") as $front) {
+			foreach (self::$xpath->evaluate(".//author-notes/fn", $front) as $frontContent) {
+				switch ($frontContent->nodeName) {
+					case "fn":
+						$authorNote = new AuthorNote($frontContent);
+						$articleContent[] = $authorNote;
+						break;
+				}
+			}
+		}
+
 		$this->articleContent = $articleContent;
 	}
 

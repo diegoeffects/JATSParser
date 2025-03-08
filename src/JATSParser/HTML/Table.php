@@ -25,6 +25,7 @@ class Table extends \DOMElement {
 		$htmlBody = $this->ownerDocument->createElement("tbody");
 
 		foreach ($jatsTable->getContent() as $row) {
+
 			/* @var $row JATSRow */
 			switch ($row->getType()) {
 				case 1:
@@ -58,7 +59,7 @@ class Table extends \DOMElement {
 		if ($hasBody) {
 			$this->appendChild($htmlBody);
 		}
-		
+
 		// Retrieving caption
 		$titleNode = $this->ownerDocument->createElement("caption");
 		$this->appendChild($titleNode);
@@ -66,7 +67,7 @@ class Table extends \DOMElement {
         // Set table id for table-wrap. Needed for links from referenceces to the table
         $this->setAttribute("id", $jatsTable->getId());
 		
-		// Set figure label (e.g., Figure 1)
+		// Set table label (e.g., Table 1)
 		if ($jatsTable->getLabel()) {
 			$spanLabel = $this->ownerDocument->createElement("span");
 			$spanLabel->setAttribute("class", "label");
@@ -87,18 +88,6 @@ class Table extends \DOMElement {
 			}
 		}
 		
-		/* Set table notes
-        * @var $jatsTable JATSPar
-        */
-		if (count($jatsTable->getNotes()) > 0) {
-			foreach ($jatsTable->getNotes() as $tableContent) {
-				$par = new Par("span");
-				$titleNode->appendChild($par);
-				$par->setAttribute("class", "notes");
-				$par->setContent($tableContent);
-			}
-		}
-
 	}
 
 	/**

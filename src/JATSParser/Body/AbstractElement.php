@@ -78,8 +78,47 @@ abstract class AbstractElement implements JATSElement {
 		return $titleOrCaption;
 	}
 
+	// Added by UNLa
+	protected function extractFoot(\DOMElement $element): ?array {
+		$footTable = array();
+		$footNodes = $this->xpath->query(".//table-wrap-foot", $element);
+		foreach ($footNodes as $footNode) {
+			$footParagraphs = $this->xpath->query(".//fn//p", $footNode);
+			foreach ($footParagraphs as $footParagraph) {
+				$par = new Par($footParagraph);
+				$footTable[] = $par;
+			}
+		}
+
+		return $footTable;
+	}
+
+	// Added by UNLa
+	protected function extractFigureSource(\DOMElement $element): ?array {
+		$figureSource = array();
+		$figureSourceParagraphs = $this->xpath->query(".//attrib", $element);
+		foreach ($figureSourceParagraphs as $figureSourceParagraph) {
+			$par = new Par($figureSourceParagraph);
+			$figureSource[] = $par;
+		}
+
+		return $figureSource;
+	}
+
+	// Added by UNLa
+	protected function extractAuthorNote(\DOMElement $element): ?array {
+		$authorNote = array();
+		$authorNoteParagraphs = $this->xpath->query(".//p", $element);
+		foreach ($authorNoteParagraphs as $authorNoteParagraph) {
+			$par = new Par($authorNoteParagraph);
+			$authorNote[] = $par;
+		}
+
+		return $authorNote;
+	}
+
 	static function mappedBlockElements() {
-		return ["Figure" => "fig", "Table" => "table-wrap"];
+		return ["Figure" => "fig", "Table" => "table-wrap", "Listing" => "list"]; // Modified by UNLa
 	}
 }
 

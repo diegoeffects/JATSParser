@@ -28,6 +28,10 @@ class Table extends AbstractElement {
 	/* @var $notes array */
 	private $notes;
 
+	// Added by UNLa
+	/* @var $foot array */
+	private $foot;
+
 	public function __construct(\DOMElement $tableWraper) {
 		parent::__construct($tableWraper);
 
@@ -36,6 +40,7 @@ class Table extends AbstractElement {
 		$this->id = $this->extractFromElement("./@id", $tableWraper);
 		$this->title = $this->extractTitleOrCaption($tableWraper, self::JATS_EXTRACT_TITLE);
 		$this->notes = $this->extractTitleOrCaption($tableWraper, self::JATS_EXTRACT_CAPTION);
+		$this->foot = $this->extractFoot($tableWraper); // Added by UNLa
 
 		$this->extractContent($tableWraper);
 	}
@@ -60,6 +65,10 @@ class Table extends AbstractElement {
 		return $this->notes;
 	}
 
+	// Added by UNLa
+	public function getFoot(): ?array {
+		return $this->foot;
+	}
 
 	private function extractContent(\DOMElement $tableWraper) {
 		$content = array();

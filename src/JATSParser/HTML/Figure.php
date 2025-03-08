@@ -28,6 +28,19 @@ class Figure extends \DOMElement {
 		$titleNode->setAttribute("class", "caption");
 		$this->appendChild($titleNode);
 
+		// Added by UNLa
+		/* Set figure sources
+        * @var $figureSource JATSPar
+        */
+		if (count($jatsFigure->getFigureSource()) > 0) {
+			foreach ($jatsFigure->getFigureSource() as $figureSource) {
+				$sourceNode = new Par("p");
+				$this->appendChild($sourceNode);
+				$sourceNode->setAttribute("class", "attrib");
+				$sourceNode->setContent($figureSource);
+			}
+		}
+
         // Set figure id. Needed for links from referenceces to the figure
         $this->setAttribute("id", $jatsFigure->getId());
 
@@ -63,6 +76,7 @@ class Figure extends \DOMElement {
 				$par->setContent($figureContent);
 			}
 		}
+
 	}
 
 }

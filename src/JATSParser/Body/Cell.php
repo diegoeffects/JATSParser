@@ -18,6 +18,14 @@ class Cell extends AbstractElement {
 	/* @var $rowspan int  */
 	private $rowspan;
 
+	// Added by UNLa
+	/* @var $style string  */
+	private $style;
+
+	// Added by UNLa
+	/* @var $align string  */
+	private $align;
+
 	function __construct(\DOMElement $cellNode) {
 		parent::__construct($cellNode);
 		
@@ -44,6 +52,10 @@ class Cell extends AbstractElement {
 		$cellNode->hasAttribute("colspan") ? $this->colspan = $cellNode->getAttribute("colspan") : $this->colspan = 1;
 
 		$cellNode->hasAttribute("rowspan") ? $this->rowspan = $cellNode->getAttribute("rowspan") : $this->rowspan = 1;
+
+		$cellNode->hasAttribute("style") ? $this->style = $cellNode->getAttribute("style"): $this->style = ""; // Added by UNLa
+
+		$cellNode->hasAttribute("align") ? $this->align = $cellNode->getAttribute("align") : $this->align = "left"; // Added by UNLa
 
 	}
 
@@ -77,5 +89,21 @@ class Cell extends AbstractElement {
 	public function getRowspan(): int
 	{
 		return $this->rowspan;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getStyle(): string // Added by UNLa
+	{
+		return $this->style;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getAlign(): string // Added by UNLa
+	{
+		return $this->align;
 	}
 }

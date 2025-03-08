@@ -7,6 +7,14 @@ class Figure extends AbstractElement {
 	/* @var $label string */
 	private $label;
 
+	// Added by UNLa
+	/* @var $attrib string */
+	private $attrib;
+
+	// Added by UNLa
+	/* @var $figureSource array */
+	private $figureSource;
+
 	/* @var $link string */
 	private $link;
 
@@ -23,6 +31,8 @@ class Figure extends AbstractElement {
 		parent::__construct($figureElement);
 
 		$this->label = $this->extractFromElement(".//label", $figureElement);
+		$this->attrib = $this->extractFromElement(".//attrib", $figureElement); // Added by UNLa
+		$this->figureSource = $this->extractFigureSource($figureElement); // Added by UNLa
 		$this->link = $this->extractFromElement(".//graphic/@xlink:href", $figureElement);
 		$this->id = $this->extractFromElement( "./@id", $figureElement);
 		$this->title = $this->extractTitleOrCaption($figureElement, self::JATS_EXTRACT_TITLE);
@@ -48,5 +58,15 @@ class Figure extends AbstractElement {
 
 	public function getLabel(): ?string {
 		return $this->label;
+	}
+
+	// Added by UNLa
+	public function getAttrib(): ?string {
+		return $this->attrib;
+	}
+
+	// Added by UNLa
+	public function getFigureSource(): ?array {
+		return $this->figureSource;
 	}
 }
